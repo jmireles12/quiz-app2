@@ -13,6 +13,7 @@ function handleStart() {
 }
 //display quiz
 function showQuiz() {
+    addHtml();
     questionCount();
     renderQuestion();
     showScore();
@@ -25,6 +26,34 @@ function showScore() {
 function questionCount() {
     $(".progress .question-count").text(`Question ${STORE.numberQuestion + 1} of ${quest}`);
 }
+
+function addHtml() {
+    html = $(`
+    <form class="question-form">
+        <p></p>
+        <hr>
+        <label class="options">
+            <input id="option1" type="radio" name="option1" class="dot">
+            <span></span>
+        </label>
+        <label class="options">
+            <input type="radio" name="option1" id="option2" class="dot">
+            <span></span>
+        </label>
+        <label class="options">
+            <input type="radio" name="option1" id="option3" class="dot">
+            <span></span>
+        </label>
+        <label class="options">
+            <input type="radio" name="option1" id="option4" class="dot">
+            <span></span>
+        </label>
+        <input type="button" value="Submit" class="submit-btn js-submit-btn">
+    </form>`)
+    console.log(html);
+    $(".quiz-part").html(html);
+}
+
 //display questions and options
 function renderQuestion() {
     $(".question-form p").text(STORE.questions[STORE.numberQuestion].question);
@@ -40,7 +69,7 @@ function renderQuestion() {
 }
 //make submit button work
 function submitAnswer() {
-    $('.js-submit-btn').on("click", function(event) {
+    $('.quiz-part').on("click", function(event) {
         console.log("Submit");
         let selected = $("input[type=radio]:checked").val()
         if (selected === undefined) {
