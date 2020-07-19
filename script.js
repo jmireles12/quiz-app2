@@ -13,9 +13,9 @@ function handleStart() {
 }
 //display quiz
 function showQuiz() {
-    addHtml();
     questionCount();
     renderQuestion();
+    renderOption();
     showScore();
 }
 //update score
@@ -27,49 +27,34 @@ function questionCount() {
     $(".progress .question-count").text(`Question ${STORE.numberQuestion + 1} of ${quest}`);
 }
 
-function addHtml() {
-    html = $(`
+//display questions and options
+function renderOption() {
+    let question = STORE.questions[something];
+    for (let i = 0; i < question.options.length; i++) {
+        $('.options').append(`
+        <input id="option${i+1}" type="radio" name="option1" class="dot">
+            <span>${question.options[i]}</span>
+        `)
+    }
+}
+
+function renderQuestion() {
+    let question = STORE.questions[something];
+    const html = $(`
     <form class="question-form">
-        <p></p>
+        <p> ${question.question}</p>
         <hr>
         <label class="options">
-            <input id="option1" type="radio" name="option1" class="dot">
-            <span></span>
-        </label>
-        <label class="options">
-            <input type="radio" name="option1" id="option2" class="dot">
-            <span></span>
-        </label>
-        <label class="options">
-            <input type="radio" name="option1" id="option3" class="dot">
-            <span></span>
-        </label>
-        <label class="options">
-            <input type="radio" name="option1" id="option4" class="dot">
-            <span></span>
         </label>
         <input type="button" value="Submit" class="submit-btn js-submit-btn">
     </form>`)
     console.log(html);
-    $(".quiz-part").html(html);
+    $("main").html(html);
 }
 
-//display questions and options
-function renderQuestion() {
-    $(".question-form p").text(STORE.questions[STORE.numberQuestion].question);
-    $(".question-form #option1").val(STORE.questions[STORE.numberQuestion].option1);
-    $(".question-form #option2").val(STORE.questions[STORE.numberQuestion].option2);
-    $(".question-form #option3").val(STORE.questions[STORE.numberQuestion].option3);
-    $(".question-form #option4").val(STORE.questions[STORE.numberQuestion].option4);
-
-    $(".question-form #option1").next().text(STORE.questions[STORE.numberQuestion].option1);
-    $(".question-form #option2").next().text(STORE.questions[STORE.numberQuestion].option2);
-    $(".question-form #option3").next().text(STORE.questions[STORE.numberQuestion].option3);
-    $(".question-form #option4").next().text(STORE.questions[STORE.numberQuestion].option4);
-}
 //make submit button work
 function submitAnswer() {
-    $('.quiz-part').on("click", function(event) {
+    $('.js-submit-btn').on("click", function(event) {
         console.log("Submit");
         let selected = $("input[type=radio]:checked").val()
         if (selected === undefined) {
